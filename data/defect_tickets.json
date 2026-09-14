@@ -1,0 +1,65 @@
+[
+  {
+    "id": "QE-812",
+    "title": "Payment sandbox intermittently slow under concurrent load",
+    "component": "payments",
+    "status": "Resolved",
+    "description": "Multiple test runs report ReadTimeout against api.paymentsvc.internal during nightly regression when run in parallel with load tests. Vendor confirmed sandbox has lower throughput than production.",
+    "resolution": "Coordinated with vendor to get a dedicated QA sandbox tier; also raised client timeout defensively.",
+    "linked_tests": ["test_payment_gateway_charge_success"]
+  },
+  {
+    "id": "QE-845",
+    "title": "Connection pool exhaustion in inventory-integration suite",
+    "component": "inventory",
+    "status": "Resolved",
+    "description": "inventory-integration suite fails intermittently with connection timeouts after ~40 tests run, recovers after CI worker restart. Suspected connection leak.",
+    "resolution": "Root-caused to a test missing a finally-block DB close; fixed and added a pool-size assertion to CI as a guardrail.",
+    "linked_tests": ["test_inventory_sync_job"]
+  },
+  {
+    "id": "QE-901",
+    "title": "Discount stacking produces incorrect totals for promo+flat combos",
+    "component": "pricing",
+    "status": "Resolved",
+    "description": "Customer support escalation: two customers reported checkout total $0.90 higher than expected when a percentage promo and a flat-dollar coupon were both applied.",
+    "resolution": "Confirmed bug in discount ordering logic, same root cause identified independently by QA in test_price_calculation_discount_stacking.",
+    "linked_tests": ["test_price_calculation_discount_stacking"]
+  },
+  {
+    "id": "QE-918",
+    "title": "CI image update broke PDF report generation across all report suites",
+    "component": "reporting",
+    "status": "Resolved",
+    "description": "After base CI image bump to ubuntu:24.04, all reporting-integration jobs began failing with missing binary errors.",
+    "resolution": "Explicit dependency installation added to pipeline; recommend auditing other suites for undeclared system dependencies.",
+    "linked_tests": ["test_report_generation_pdf"]
+  },
+  {
+    "id": "QE-933",
+    "title": "SMS vendor sandbox rate limit causing notification test flakiness",
+    "component": "notifications",
+    "status": "Resolved",
+    "description": "notifications-integration suite fails ~15% of runs with HTTP 429 from SMS vendor when full suite runs in parallel across 8 xdist workers.",
+    "resolution": "Rate limiter fixture added; flakiness dropped to 0% over 50 subsequent runs.",
+    "linked_tests": ["test_notification_dispatch_rate_limit"]
+  },
+  {
+    "id": "QE-947",
+    "title": "Currency rounding discrepancy after checkout refactor",
+    "component": "checkout",
+    "status": "Resolved",
+    "description": "QA flagged sub-cent rounding differences in EUR/GBP totals after the checkout money-handling refactor (PR #2291) switched from Decimal to float internally.",
+    "resolution": "Refactor reverted to Decimal arithmetic; added property-based rounding tests to prevent recurrence.",
+    "linked_tests": ["test_cart_total_currency_conversion"]
+  },
+  {
+    "id": "QE-960",
+    "title": "Search ranking golden fixtures stale after relevance model update",
+    "component": "search",
+    "status": "Won't Fix - By Design",
+    "description": "QA test failures on ranking assertions after search relevance model v3 rollout. Search team confirms ranking changes are intentional.",
+    "resolution": "Established a process requiring search-relevance model changes to be tagged in the release changelog so QA can proactively refresh golden fixtures.",
+    "linked_tests": ["test_search_relevance_ranking"]
+  }
+]

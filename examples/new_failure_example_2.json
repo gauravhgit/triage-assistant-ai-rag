@@ -1,0 +1,6 @@
+{
+  "test_name": "test_tax_calculation_multi_currency",
+  "suite": "checkout-unit",
+  "failure_message": "AssertionError: expected 112.45 GBP, got 112.44 GBP",
+  "stack_trace_snippet": "assert total == expected, tests/checkout/test_tax.py:78"
+}

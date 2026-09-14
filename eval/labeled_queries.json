@@ -1,0 +1,38 @@
+[
+  {
+    "name": "payment timeout should match HF-001",
+    "query": "ReadTimeoutError: HTTPSConnectionPool(host='api.paymentsvc.internal', port=443): Read timed out. (read timeout=5)",
+    "expected_relevant_doc_ids": ["HF-001"],
+    "top_k": 5
+  },
+  {
+    "name": "stale element should match HF-002 and UI runbook",
+    "query": "StaleElementReferenceException: stale element reference: element is not attached to the page document",
+    "expected_relevant_doc_ids": ["HF-002", "ui-flakiness-selenium::0"],
+    "top_k": 5
+  },
+  {
+    "name": "connection pool exhaustion should match HF-005 or its runbook",
+    "query": "psycopg2.OperationalError: could not connect to server: Connection timed out, intermittent after many tests",
+    "expected_relevant_doc_ids": ["HF-005", "QE-845"],
+    "top_k": 5
+  },
+  {
+    "name": "SMS 429 rate limit should match HF-006",
+    "query": "HTTP 429 Too Many Requests from SMS vendor sandbox during parallel test run",
+    "expected_relevant_doc_ids": ["HF-006", "QE-933"],
+    "top_k": 5
+  },
+  {
+    "name": "currency rounding drift should match HF-012",
+    "query": "assertion failure off by one cent in currency total after refactor to float",
+    "expected_relevant_doc_ids": ["HF-012", "QE-947"],
+    "top_k": 5
+  },
+  {
+    "name": "missing CI binary should match HF-009",
+    "query": "FileNotFoundError wkhtmltopdf missing after CI image update",
+    "expected_relevant_doc_ids": ["HF-009", "QE-918"],
+    "top_k": 5
+  }
+]

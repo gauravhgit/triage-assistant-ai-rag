@@ -1,0 +1,6 @@
+{
+  "test_name": "test_refund_gateway_charge_reversal",
+  "suite": "payments-integration",
+  "failure_message": "ReadTimeoutError: HTTPSConnectionPool(host='api.paymentsvc.internal', port=443): Read timed out. (read timeout=5)",
+  "stack_trace_snippet": "requests.exceptions.ReadTimeout at payments/client.py:145 in reverse_charge"
+}

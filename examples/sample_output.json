@@ -1,0 +1,133 @@
+{
+  "generated_at": "2026-09-03T19:25:00.587546+00:00",
+  "mode": "extractive_fallback",
+  "input_failure": {
+    "test_name": "test_refund_gateway_charge_reversal",
+    "suite": "payments-integration",
+    "failure_message": "ReadTimeoutError: HTTPSConnectionPool(host='api.paymentsvc.internal', port=443): Read timed out. (read timeout=5)",
+    "stack_trace_snippet": "requests.exceptions.ReadTimeout at payments/client.py:145 in reverse_charge"
+  },
+  "retrieved_context": [
+    {
+      "doc_id": "HF-001",
+      "text": "Test: test_payment_gateway_charge_success (suite: payments-integration)\nFailure message: ReadTimeoutError: HTTPSConnectionPool(host='api.paymentsvc.internal', port=443): Read timed out. (read timeout=5)\nStack trace: requests.exceptions.ReadTimeout at payments/client.py:112 in charge_card\nRoot cause: Payment service sandbox occasionally takes 6-9s under load; test timeout was hardcoded to 5s.\nResolution: Increased client read timeout to 15s for sandbox environment and added retry-with-backoff wrapper.\nTags: timeout, payments, flaky, external-dependency",
+      "source_type": "historical_failure",
+      "metadata": {
+        "id": "HF-001",
+        "test_name": "test_payment_gateway_charge_success",
+        "suite": "payments-integration",
+        "failure_message": "ReadTimeoutError: HTTPSConnectionPool(host='api.paymentsvc.internal', port=443): Read timed out. (read timeout=5)",
+        "stack_trace_snippet": "requests.exceptions.ReadTimeout at payments/client.py:112 in charge_card",
+        "root_cause": "Payment service sandbox occasionally takes 6-9s under load; test timeout was hardcoded to 5s.",
+        "resolution": "Increased client read timeout to 15s for sandbox environment and added retry-with-backoff wrapper.",
+        "resolved_by": "j.alvarez",
+        "date": "2025-11-03",
+        "tags": [
+          "timeout",
+          "payments",
+          "flaky",
+          "external-dependency"
+        ]
+      },
+      "score": 1.150156569480896,
+      "matched_keywords": [
+        "443",
+        "ReadTimeout",
+        "ReadTimeoutError"
+      ]
+    },
+    {
+      "doc_id": "QE-812",
+      "text": "Ticket QE-812 [payments] - Payment sandbox intermittently slow under concurrent load\nDescription: Multiple test runs report ReadTimeout against api.paymentsvc.internal during nightly regression when run in parallel with load tests. Vendor confirmed sandbox has lower throughput than production.\nResolution: Coordinated with vendor to get a dedicated QA sandbox tier; also raised client timeout defensively.\nStatus: Resolved",
+      "source_type": "defect_ticket",
+      "metadata": {
+        "id": "QE-812",
+        "title": "Payment sandbox intermittently slow under concurrent load",
+        "component": "payments",
+        "status": "Resolved",
+        "description": "Multiple test runs report ReadTimeout against api.paymentsvc.internal during nightly regression when run in parallel with load tests. Vendor confirmed sandbox has lower throughput than production.",
+        "resolution": "Coordinated with vendor to get a dedicated QA sandbox tier; also raised client timeout defensively.",
+        "linked_tests": [
+          "test_payment_gateway_charge_success"
+        ]
+      },
+      "score": 0.28231013715267184,
+      "matched_keywords": [
+        "ReadTimeout"
+      ]
+    },
+    {
+      "doc_id": "HF-007",
+      "text": "Test: test_login_mfa_flow (suite: auth-e2e)\nFailure message: TimeoutException: Message: Timed out waiting for element to become visible: #mfa-code-input\nStack trace: selenium.common.exceptions.TimeoutException at e2e/auth_page.py:132\nRoot cause: MFA email delivery in staging is asynchronous and occasionally delayed 10-20s beyond the test's 8s wait.\nResolution: Replaced fixed wait with polling against test mailbox API with a 30s timeout and early-exit on receipt.\nTags: timeout, flaky, auth, async-dependency",
+      "source_type": "historical_failure",
+      "metadata": {
+        "id": "HF-007",
+        "test_name": "test_login_mfa_flow",
+        "suite": "auth-e2e",
+        "failure_message": "TimeoutException: Message: Timed out waiting for element to become visible: #mfa-code-input",
+        "stack_trace_snippet": "selenium.common.exceptions.TimeoutException at e2e/auth_page.py:132",
+        "root_cause": "MFA email delivery in staging is asynchronous and occasionally delayed 10-20s beyond the test's 8s wait.",
+        "resolution": "Replaced fixed wait with polling against test mailbox API with a 30s timeout and early-exit on receipt.",
+        "resolved_by": "s.patel",
+        "date": "2025-11-28",
+        "tags": [
+          "timeout",
+          "flaky",
+          "auth",
+          "async-dependency"
+        ]
+      },
+      "score": 0.0746733546257019,
+      "matched_keywords": []
+    },
+    {
+      "doc_id": "HF-006",
+      "text": "Test: test_notification_dispatch_rate_limit (suite: notifications-integration)\nFailure message: HTTP 429 Too Many Requests from api.smsvendor.com\nStack trace: notifications/sms_client.py:74 in send_sms\nRoot cause: Third-party SMS vendor sandbox enforces 10 req/sec; parallel test execution (pytest-xdist, 8 workers) exceeded the limit.\nResolution: Added a shared token-bucket rate limiter fixture scoped to the test session for vendor-sandbox calls.\nTags: rate-limit, external-dependency, parallel-execution, flaky",
+      "source_type": "historical_failure",
+      "metadata": {
+        "id": "HF-006",
+        "test_name": "test_notification_dispatch_rate_limit",
+        "suite": "notifications-integration",
+        "failure_message": "HTTP 429 Too Many Requests from api.smsvendor.com",
+        "stack_trace_snippet": "notifications/sms_client.py:74 in send_sms",
+        "root_cause": "Third-party SMS vendor sandbox enforces 10 req/sec; parallel test execution (pytest-xdist, 8 workers) exceeded the limit.",
+        "resolution": "Added a shared token-bucket rate limiter fixture scoped to the test session for vendor-sandbox calls.",
+        "resolved_by": "m.chen",
+        "date": "2025-11-25",
+        "tags": [
+          "rate-limit",
+          "external-dependency",
+          "parallel-execution",
+          "flaky"
+        ]
+      },
+      "score": 0.06953548640012741,
+      "matched_keywords": []
+    },
+    {
+      "doc_id": "HF-005",
+      "text": "Test: test_inventory_sync_job (suite: inventory-integration)\nFailure message: psycopg2.OperationalError: could not connect to server: Connection timed out\nStack trace: inventory/db.py:58 in get_connection\nRoot cause: DB connection pool exhausted because a prior test in the same suite failed to close its connection, leaking a connection per run.\nResolution: Added context-manager based connection handling and a teardown fixture that asserts pool size returns to baseline.\nTags: database, connection-leak, flaky, test-isolation",
+      "source_type": "historical_failure",
+      "metadata": {
+        "id": "HF-005",
+        "test_name": "test_inventory_sync_job",
+        "suite": "inventory-integration",
+        "failure_message": "psycopg2.OperationalError: could not connect to server: Connection timed out",
+        "stack_trace_snippet": "inventory/db.py:58 in get_connection",
+        "root_cause": "DB connection pool exhausted because a prior test in the same suite failed to close its connection, leaking a connection per run.",
+        "resolution": "Added context-manager based connection handling and a teardown fixture that asserts pool size returns to baseline.",
+        "resolved_by": "r.osei",
+        "date": "2025-11-21",
+        "tags": [
+          "database",
+          "connection-leak",
+          "flaky",
+          "test-isolation"
+        ]
+      },
+      "score": 0.06441162526607513,
+      "matched_keywords": []
+    }
+  ],
+  "report": "## Triage Report (extractive fallback - no ANTHROPIC_API_KEY set)\n\n**Likely Root Cause Hypothesis** (Confidence: High):\n> Based on closest historical match `HF-001`: Payment service sandbox occasionally takes 6-9s under load; test timeout was hardcoded to 5s.\n\n**Supporting Evidence:**\n- `HF-001` [historical_failure, relevance=1.15] (matched terms: 443, ReadTimeout, ReadTimeoutError)\n- `QE-812` [defect_ticket, relevance=0.28] (matched terms: ReadTimeout)\n- `HF-007` [historical_failure, relevance=0.07]\n- `HF-006` [historical_failure, relevance=0.07]\n- `HF-005` [historical_failure, relevance=0.06]\n\n**New Issue or Recurrence?**\n> Likely a **recurrence** of pattern seen in `HF-001`.\n\n**Recommended Next Action:**\n> Increased client read timeout to 15s for sandbox environment and added retry-with-backoff wrapper.\n\n**Suggested Owner/Component:** payments team (based on related ticket `QE-812`)"
+}

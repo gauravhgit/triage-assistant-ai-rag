@@ -1,0 +1,42 @@
+[
+  {
+    "sha": "7c1a9f2",
+    "date": "2025-12-01",
+    "author": "d.kim",
+    "message": "Add support for flat-dollar promo codes alongside percentage discounts",
+    "files_changed": ["pricing/engine.py", "pricing/promo_rules.py"],
+    "component": "pricing"
+  },
+  {
+    "sha": "9df02aa",
+    "date": "2025-12-14",
+    "author": "l.nguyen",
+    "message": "Refactor checkout money handling for performance; use float instead of Decimal in hot path",
+    "files_changed": ["checkout/currency.py", "checkout/totals.py"],
+    "component": "checkout"
+  },
+  {
+    "sha": "2b6e711",
+    "date": "2025-11-30",
+    "author": "a.torres",
+    "message": "Bump CI base image to ubuntu:24.04",
+    "files_changed": [".ci/Dockerfile", ".ci/pipeline.yml"],
+    "component": "infra"
+  },
+  {
+    "sha": "f4a018c",
+    "date": "2025-11-13",
+    "author": "s.patel",
+    "message": "Reduce default page size for orders list endpoint from 25 to 20 (perf tuning)",
+    "files_changed": ["orders-service/config/defaults.yml"],
+    "component": "orders"
+  },
+  {
+    "sha": "c81efab",
+    "date": "2025-12-08",
+    "author": "search-team",
+    "message": "Deploy relevance model v3 with updated ranking weights",
+    "files_changed": ["search/ranking_model.py", "search/config/weights.json"],
+    "component": "search"
+  }
+]
